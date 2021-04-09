@@ -8,19 +8,11 @@ function App() {
   const [data, setData] = useState([]);
   const [selected, setSelected] = useState({});
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(
-        API + '/prospects',
-      );
-      setData(result.data.data);
-    };
-    fetchData();
-  }, []);
-
-  function handleChange(event) {
-    const name = event.target.value;
-    setSelected({selected: {name}})
+  async function fetchData() {
+    const result = await axios(
+      API + '/prospects',
+    );
+    setData(result.data.data);
   }
 
   async function postData(selected) {
@@ -31,10 +23,19 @@ function App() {
     setSelected(data)
   }
 
+  function handleChange(event) {
+    const value = event.target.value;
+    setSelected({selected: {value}})
+  }
+
   function handleSubmit(event) {
     postData(selected)
     event.preventDefault();
   }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="App container">
