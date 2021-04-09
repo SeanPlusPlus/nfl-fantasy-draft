@@ -2,25 +2,27 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
+const API = 'http://localhost:3001/api'
+
 function App() {
-  const [message, setMessage] = useState();
+  const [data, setData] = useState([]);
   useEffect(() => {
-    const fetchMessage= async () => {
+    const fetchData = async () => {
       const result = await axios(
-        'http://localhost:3001',
+        API + '/prospects',
       );
-      setMessage(result.data.message);
+      setData(result.data.data);
     };
-    fetchMessage();
+    fetchData();
   }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          { message }
-        </p>
-      </header>
+    <div className="App container">
+      <h1>Prospects</h1>
+      <hr />
+      {data.map((item) => (
+        <li key={item.name}>{item.name}</li>
+      ))}
     </div>
   );
 }
