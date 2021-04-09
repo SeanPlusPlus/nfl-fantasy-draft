@@ -15,7 +15,9 @@ app.get(BASE + '/prospects', (req, res) => {
 });
 
 app.post(BASE + '/selected', (req, res) => {
-  res.send({ received: req.body });
+  const received = req.body;
+  console.log(received);
+  res.send({ received });
 });
 
 app.listen(port, () => {

@@ -19,13 +19,20 @@ function App() {
   }, []);
 
   function handleChange(event) {
-    console.log(event.target.value);
     const name = event.target.value;
-    setSelected({name})
+    setSelected({selected: {name}})
+  }
+
+  async function postData(selected) {
+    const { data } = await axios.post(
+      API + '/selected',
+      selected.selected
+    )
+    setSelected(data)
   }
 
   function handleSubmit(event) {
-    console.log('selected', selected);
+    postData(selected)
     event.preventDefault();
   }
 
@@ -42,6 +49,8 @@ function App() {
           </select>
         </div>
         <button type="submit" className="btn btn-primary">Submit</button>
+        <hr />
+        <pre>{JSON.stringify(selected, null, 2)}</pre>
       </form>
     </div>
   );
