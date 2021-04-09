@@ -1,13 +1,12 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const fs = require('fs');
 const port = 3001;
 const BASE = '/api';
 
 app.use(cors());
-app.use(bodyParser());
+app.use(express.json());
 
 app.get(BASE + '/prospects', (req, res) => {
   const rawdata = fs.readFileSync('prospects.json');
