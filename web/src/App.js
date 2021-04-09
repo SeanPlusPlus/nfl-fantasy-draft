@@ -7,6 +7,7 @@ const API = 'http://localhost:3001/api'
 function App() {
   const [data, setData] = useState([]);
   const [selected, setSelected] = useState({});
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(
