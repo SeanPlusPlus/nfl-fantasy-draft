@@ -6,6 +6,7 @@ const API = 'http://localhost:3001/api'
 
 function App() {
   const [data, setData] = useState([]);
+  const [selected, setSelected] = useState({});
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(
@@ -16,13 +17,31 @@ function App() {
     fetchData();
   }, []);
 
+  function handleChange(event) {
+    console.log(event.target.value);
+    const name = event.target.value;
+    setSelected({name})
+  }
+
+  function handleSubmit(event) {
+    console.log('selected', selected);
+    event.preventDefault();
+  }
+
   return (
     <div className="App container">
-      <h1>Prospects</h1>
-      <hr />
-      {data.map((item) => (
-        <li key={item.name}>{item.name}</li>
-      ))}
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="prospects-select">Prospects</label>
+          <select className="form-control" id="prospects-select" onChange={handleChange}>
+          <option defaultValue> -- select an option -- </option>
+            {data.map((item) => (
+              <option key={item.name} value={item.name}>{item.name} - {item.position} - {item.school}</option>
+            ))}
+          </select>
+        </div>
+        <button type="submit" className="btn btn-primary">Submit</button>
+      </form>
     </div>
   );
 }
