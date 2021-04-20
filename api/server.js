@@ -2,13 +2,14 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const fs = require('fs');
+const drafted = require('./drafted')
+const prospects = require('./prospects')
+
 const port = 3001;
 const BASE = '/api';
 
 app.use(cors());
 app.use(express.json());
-
-const drafted = new Set();
 
 function getScore(drafted, el) {
   return {
@@ -31,15 +32,15 @@ function leaderBoard(drafted) {
 }
 
 function filterDrafted(drafted, el) {
-  return !Array.from(drafted).includes(el.name)
+  return !drafted.includes(el.name)
 }
 
 app.get(BASE + '/prospects', (req, res) => {
-  const rawdata = fs.readFileSync('prospects.json');
-  const prospects = JSON.parse(rawdata).data.filter(filterDrafted.bind(this, drafted));
+  const drafted_players = drafted.get()
+  const un_drafted = prospects.get().filter(filterDrafted.bind(this, drafted_players));
   res.send({
-    prospects,
-    drafted: Array.from(drafted),
+    prospects: un_drafted,
+    drafted: drafted_players,
     leaderBoard: leaderBoard(drafted)
   });
 });
@@ -53,14 +54,13 @@ app.post(BASE + '/selected', (req, res) => {
     res.send({ message: 'must pass a value '});
   }
 
-  drafted.add(received.value)
-  const rawdata = fs.readFileSync('prospects.json');
-  const prospects = JSON.parse(rawdata).data.filter(filterDrafted.bind(this, drafted));
+  const drafted_players = drafted.add(value)
+  const un_drafted = prospects.get().filter(filterDrafted.bind(this, drafted_players));
   res.send({ 
     received,
-    prospects, 
-    drafted: Array.from(drafted),
-    leaderBoard: leaderBoard(drafted)
+    prospects: un_drafted, 
+    drafted: drafted_players,
+    leaderBoard: leaderBoard(drafted.data),
   });
 });
 
