@@ -12,7 +12,7 @@ function App() {
   // state
   const [prospects, setProspects] = useState([])
   const [leaderBoard, setLeaderBoard] = useState([])
-  const [selectedProspect, setSelectedProspect] = useState({})
+  const [selectedProspect, setSelectedProspect] = useState('')
   const [selectedOption, setSelectedOption] = useState([])
   const [disabled, setDisabled] = useState("disabled")
   const [drafted, setDrafted] = useState([])
@@ -41,7 +41,7 @@ function App() {
       setDrafted(data.drafted)
       setProspects(data.prospects)
       setLeaderBoard(data.leaderBoard);
-      setSelectedProspect({})
+      setSelectedProspect('')
       setDisabled(false)
       ref.current.focus()
       ref.current.clear()
@@ -96,7 +96,11 @@ function App() {
                   ref={ref}
                 />
               </div>
-              <button type="submit" className="btn btn-primary">Submit</button>
+              <button
+                disabled={disabled || !selectedOption.length}
+                type="submit"
+                className="btn btn-primary"
+              >Submit</button>
             </fieldset>
           </form>
         </div>
