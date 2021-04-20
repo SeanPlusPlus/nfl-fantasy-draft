@@ -41,7 +41,7 @@ function App() {
       setDrafted(data.drafted)
       setProspects(data.prospects)
       setLeaderBoard(data.leaderBoard);
-      setSelectedProspect(data)
+      setSelectedProspect({})
       setDisabled(false)
       ref.current.focus()
       ref.current.clear()
@@ -57,6 +57,8 @@ function App() {
   }
 
   function handleSubmit(event) {
+    event.preventDefault()
+
     if (!_get(selectedProspect, 'selected.value')) {
       return
     }
@@ -64,7 +66,6 @@ function App() {
     setDisabled("disabled")
     setSelectedOption([])
     postData(selectedProspect)
-    event.preventDefault()
   }
 
   useEffect(() => {
