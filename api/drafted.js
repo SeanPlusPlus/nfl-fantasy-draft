@@ -8,7 +8,7 @@ module.exports = {
   },
 
   add: function(name) {
-    console.log('name', name);
+    // console.log('name', name);
     const rawdata = fs.readFileSync(path);
     const data = JSON.parse(rawdata).data
     data.push(name);

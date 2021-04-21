@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
+const csvparser = require('csv-parser');
 const cors = require('cors');
 const fs = require('fs');
 const drafted = require('./drafted')
 const prospects = require('./prospects')
+const csv = './data.csv';
 
 const port = 3001;
 const BASE = '/api';
@@ -18,7 +20,25 @@ function getScore(drafted, el) {
   }
 }
 
+const picks = [];
+
+function getPicks() {
+  fs.createReadStream(csv)
+  .pipe(csvparser())
+  .on('data', (row) => {
+    picks.push(row);
+  });
+}
+
+getPicks();
+
 function leaderBoard(drafted) {
+  fs.createReadStream(csv)
+  .pipe(csvparser())
+  .on('data', (row) => {
+    picks.push(row);
+  })
+
   const names = [
     'Sean S.',
     'Ryan',
@@ -38,6 +58,8 @@ function filterDrafted(drafted, el) {
 app.get(BASE + '/prospects', (req, res) => {
   const drafted_players = drafted.get()
   const un_drafted = prospects.get().filter(filterDrafted.bind(this, drafted_players));
+  console.log(picks);
+  
   res.send({
     prospects: un_drafted,
     drafted: drafted_players,
