@@ -8,6 +8,8 @@ import './App.css';
 
 const API = 'http://localhost:3001/api/'
 
+const PRODUCTION = process.env.NODE_ENV === 'production'
+
 function App() {
   // state
   const [prospects, setProspects] = useState([])
@@ -75,30 +77,32 @@ function App() {
         </div>
       </div>
       <div className="row">
-        <div className="col border border-right-1 border-bottom-0 border-top-0 border-left-0">
-          <form onSubmit={handleSubmit}>
-            <fieldset disabled={disabled}>
-              <div className="form-group">
-                <h3>Prospects</h3>
-                <Typeahead
-                  disabled={disabled}
-                  id="prospects"
-                  labelKey="name"
-                  onChange={handleChange}
-                  options={options}
-                  placeholder="Select"
-                  selected={selectedOption}
-                  ref={ref}
-                />
-              </div>
-              <button
-                disabled={disabled || !selectedOption.length}
-                type="submit"
-                className="btn btn-primary"
-              >Submit</button>
-            </fieldset>
-          </form>
-        </div>
+        {!PRODUCTION && (
+          <div className="col border border-right-1 border-bottom-0 border-top-0 border-left-0">
+            <form onSubmit={handleSubmit}>
+              <fieldset disabled={disabled}>
+                <div className="form-group">
+                  <h3>Prospects</h3>
+                  <Typeahead
+                    disabled={disabled}
+                    id="prospects"
+                    labelKey="name"
+                    onChange={handleChange}
+                    options={options}
+                    placeholder="Select"
+                    selected={selectedOption}
+                    ref={ref}
+                  />
+                </div>
+                <button
+                  disabled={disabled || !selectedOption.length}
+                  type="submit"
+                  className="btn btn-primary"
+                >Submit</button>
+              </fieldset>
+            </form>
+          </div>
+        )}
         <div className="col border border-right-1 border-bottom-0 border-top-0 border-left-0">
           <Drafted data={drafted} />
         </div>
