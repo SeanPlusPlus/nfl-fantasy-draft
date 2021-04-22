@@ -20,7 +20,17 @@ function getPicks() {
   fs.createReadStream(csv)
   .pipe(csvparser())
   .on('data', (row) => {
-    picks.push(row);
+    const list = [];
+    for (var i = 0; i < 32; i++) {
+      const pick_number = `#${(i + 1)}`
+      list.push(row[pick_number].split(' - ')[0])
+    }
+    const entry = {
+      email: row['Email Address'],
+      list: list,
+    }
+    
+    picks.push(entry);
   });
 }
 
@@ -41,7 +51,7 @@ app.get(BASE + '/prospects', (req, res) => {
   res.send({
     prospects: un_drafted,
     drafted: drafted_players,
-    leaderBoard: leaderBoard(drafted, picks),
+    leaderBoard: leaderBoard(drafted_players, picks),
     picks: picks,
   });
 });
@@ -57,11 +67,12 @@ app.post(BASE + '/selected', (req, res) => {
 
   const drafted_players = drafted.add(value)
   const un_drafted = prospects.get().filter(filterDrafted.bind(this, drafted_players));
+  
   res.send({ 
     received,
     prospects: un_drafted, 
     drafted: drafted_players,
-    leaderBoard: leaderBoard(drafted.data, picks),
+    leaderBoard: leaderBoard(drafted_players, picks),
   });
 });
 
