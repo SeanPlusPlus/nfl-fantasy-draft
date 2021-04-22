@@ -9,7 +9,7 @@ const score = require('./score')
 const csv = './data.csv';
 
 const port = 3001;
-const BASE = '/api';
+const BASE = '/api/';
 
 app.use(cors());
 app.use(express.json());
@@ -44,7 +44,7 @@ function filterDrafted(drafted, el) {
   return !drafted.includes(el.name)
 }
 
-app.get(BASE + '/prospects', (req, res) => {
+app.get(BASE, (req, res) => {
   const drafted_players = drafted.get()
   const un_drafted = prospects.get().filter(filterDrafted.bind(this, drafted_players));
   res.send({
@@ -54,7 +54,7 @@ app.get(BASE + '/prospects', (req, res) => {
   });
 });
 
-app.post(BASE + '/selected', (req, res) => {
+app.post(BASE, (req, res) => {
   const received = req.body;
   const value = received && received.value;
 

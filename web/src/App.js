@@ -6,7 +6,7 @@ import Drafted from './Drafted'
 import LeaderBoard from './LeaderBoard'
 import './App.css';
 
-const API = 'http://localhost:3001/api'
+const API = 'http://localhost:3001/api/'
 
 function App() {
   // state
@@ -22,9 +22,7 @@ function App() {
   const ref = useRef()
 
   async function fetchData() {
-    const result = await axios(
-      API + '/prospects',
-    );
+    const result = await axios(API);
     setProspects(result.data.prospects);
     setDrafted(result.data.drafted);
     setLeaderBoard(result.data.leaderBoard);
@@ -32,10 +30,7 @@ function App() {
   }
 
   async function postData(selected) {
-    const { data } = await axios.post(
-      API + '/selected',
-      selected.selected
-    )
+    const { data } = await axios.post(API, selected.selected)
 
     if (selected.selected.value === data.received.value) {
       setDrafted(data.drafted)
