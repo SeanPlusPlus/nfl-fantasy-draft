@@ -13,7 +13,6 @@ module.exports = {
       const pick_index = getPickIdx(player, el.list)
       const delta = Math.abs(i - pick_index)
       score += Math.pow(delta, 2)
-      // console.log(i, player, pick_index, delta, score);
     }
     
     return {
