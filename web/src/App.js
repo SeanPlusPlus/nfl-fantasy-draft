@@ -25,6 +25,7 @@ function App() {
 
   async function fetchData() {
     const result = await axios(API);
+    console.log(new Date(), 'fetchData result', result);
     setProspects(result.data.prospects);
     setDrafted(result.data.drafted);
     setLeaderBoard(result.data.leaderBoard);
@@ -67,6 +68,11 @@ function App() {
 
   useEffect(() => {
     fetchData();
+    if (PRODUCTION) {
+      setInterval(() => {
+        fetchData()
+      }, 3000)
+    }
   }, []);
 
   return (
