@@ -6,17 +6,18 @@ function getPickIdx(drafted_player, draft_list) {
   return 33
 }
 module.exports = {
-  get: function(drafted, el) {
+  get: function(drafted, entry) {
+    console.log(entry);
     var score = 0;
     for (var i = 0; i < drafted.length; i++) {
       const player = drafted[i]
-      const pick_index = getPickIdx(player, el.list)
+      const pick_index = getPickIdx(player, entry.list)
       const delta = Math.abs(i - pick_index)
       score += Math.pow(delta, 2)
     }
     
     return {
-      name: el.email,
+      name: entry.email,
       score: score,
     }
   }

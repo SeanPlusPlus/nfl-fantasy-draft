@@ -14,9 +14,9 @@ const BASE = '/api';
 app.use(cors());
 app.use(express.json());
 
-const picks = [];
+const entries = [];
 
-function getPicks() {
+function getEntries() {
   fs.createReadStream(csv)
   .pipe(csvparser())
   .on('data', (row) => {
@@ -29,12 +29,11 @@ function getPicks() {
       email: row['Email Address'],
       list: list,
     }
-    
-    picks.push(entry);
+    entries.push(entry);
   });
 }
 
-getPicks();
+getEntries();
 
 function leaderBoard(drafted, picks) {
   const scores = picks.map(score.get.bind(this, drafted));
@@ -51,8 +50,7 @@ app.get(BASE + '/prospects', (req, res) => {
   res.send({
     prospects: un_drafted,
     drafted: drafted_players,
-    leaderBoard: leaderBoard(drafted_players, picks),
-    picks: picks,
+    leaderBoard: leaderBoard(drafted_players, entries),
   });
 });
 
@@ -72,7 +70,7 @@ app.post(BASE + '/selected', (req, res) => {
     received,
     prospects: un_drafted, 
     drafted: drafted_players,
-    leaderBoard: leaderBoard(drafted_players, picks),
+    leaderBoard: leaderBoard(drafted_players, entries),
   });
 });
 
