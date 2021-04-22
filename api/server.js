@@ -5,6 +5,7 @@ const cors = require('cors');
 const fs = require('fs');
 const drafted = require('./drafted')
 const prospects = require('./prospects')
+const score = require('./score')
 const csv = './data.csv';
 
 const port = 3001;
@@ -12,13 +13,6 @@ const BASE = '/api';
 
 app.use(cors());
 app.use(express.json());
-
-function getScore(drafted, el) {
-  return {
-    name: el,
-    score: Math.floor(Math.random() * 1000)
-  }
-}
 
 const picks = [];
 
@@ -32,22 +26,8 @@ function getPicks() {
 
 getPicks();
 
-function leaderBoard(drafted) {
-  fs.createReadStream(csv)
-  .pipe(csvparser())
-  .on('data', (row) => {
-    picks.push(row);
-  })
-
-  const names = [
-    'Sean S.',
-    'Ryan',
-    'Sean R.',
-    'Lucas',
-    'Ben',
-    'Chris',
-  ]
-  const scores = names.map(getScore.bind(this, drafted));
+function leaderBoard(drafted, picks) {
+  const scores = picks.map(score.get.bind(this, drafted));
   return scores.sort((a, b) => (a.score > b.score) ? 1 : -1)
 }
 
@@ -58,12 +38,11 @@ function filterDrafted(drafted, el) {
 app.get(BASE + '/prospects', (req, res) => {
   const drafted_players = drafted.get()
   const un_drafted = prospects.get().filter(filterDrafted.bind(this, drafted_players));
-  console.log(picks);
-  
   res.send({
     prospects: un_drafted,
     drafted: drafted_players,
-    leaderBoard: leaderBoard(drafted)
+    leaderBoard: leaderBoard(drafted, picks),
+    picks: picks,
   });
 });
 
@@ -82,7 +61,7 @@ app.post(BASE + '/selected', (req, res) => {
     received,
     prospects: un_drafted, 
     drafted: drafted_players,
-    leaderBoard: leaderBoard(drafted.data),
+    leaderBoard: leaderBoard(drafted.data, picks),
   });
 });
 
