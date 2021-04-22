@@ -14,7 +14,7 @@ const BASE = '/api';
 app.use(cors());
 app.use(express.json());
 
-const entries = [];
+const entries = []
 
 function getEntries() {
   fs.createReadStream(csv)
