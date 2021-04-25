@@ -6,9 +6,13 @@ import Drafted from './Drafted'
 import LeaderBoard from './LeaderBoard'
 import './App.css';
 
-const API = 'http://localhost:3001/api/'
 
-const PRODUCTION = process.env.NODE_ENV === 'production'
+const ENV = process.env.NODE_ENV 
+
+let API = 'http://localhost:3001/api/'
+if (ENV === 'production') {
+  API = 'https://raw.githubusercontent.com/SeanPlusPlus/nfl-fantasy-draft/main/data/api.json' 
+} 
 
 function App() {
   // state
@@ -25,7 +29,9 @@ function App() {
 
   async function fetchData() {
     const result = await axios(API);
-    console.log(new Date(), 'fetchData result', result);
+    console.log(new Date());
+    console.log('API', API);
+    console.log('fetchData result', result);
     setProspects(result.data.prospects);
     setDrafted(result.data.drafted);
     setLeaderBoard(result.data.leaderBoard);
@@ -68,7 +74,7 @@ function App() {
 
   useEffect(() => {
     fetchData();
-    if (PRODUCTION) {
+    if (ENV === 'production') {
       setInterval(() => {
         fetchData()
       }, 3000)
@@ -83,7 +89,7 @@ function App() {
         </div>
       </div>
       <div className="row">
-        {!PRODUCTION && (
+        {(ENV !== 'production') && (
           <div className="col border border-right-1 border-bottom-0 border-top-0 border-left-0">
             <form onSubmit={handleSubmit}>
               <fieldset disabled={disabled}>
