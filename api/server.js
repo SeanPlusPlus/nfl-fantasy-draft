@@ -27,6 +27,7 @@ function getEntries() {
     }
     const entry = {
       name: row['Timestamp'],
+      team: row['Team'],
       email: row['Email Address'],
       list: list,
     }
