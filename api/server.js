@@ -39,7 +39,8 @@ getEntries();
 
 function leaderBoard(drafted, picks) {
   const scores = picks.map(score.get.bind(this, drafted));
-  return scores.sort((a, b) => (a.score > b.score) ? 1 : -1)
+  const sorted = scores.sort((a, b) => (a.score > b.score) ? 1 : -1)
+  return score.rank(sorted)
 }
 
 function filterDrafted(drafted, el) {

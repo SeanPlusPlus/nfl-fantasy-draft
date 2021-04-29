@@ -18,9 +18,7 @@ module.exports = {
       const pick_index = getPickIdx(player, entry.list)
       const delta = Math.abs(i - pick_index)
       score += Math.pow(delta, 2)
-      // console.log(player, pick_index, delta, score);
     }
-
     
     return {
       name: entry.name,
@@ -28,5 +26,16 @@ module.exports = {
       email: entry.email,
       score: score,
     }
+  },
+
+  rank: function(scores) {
+    scores.forEach((score, idx) => {
+      score.rank = idx + 1;
+      const prev = scores[idx - 1];
+      if (prev && prev.score === score.score) {
+        score.rank = prev.rank
+      }
+    });
+    return scores;
   }
 }
