@@ -9,8 +9,11 @@ function App({data}) {
           {data.map((el) => (
             <tr key={el.name}>
               <th scope="row">
-                <img alt="team" class="team" src={el.team} /> {el.name}
+                {el.rank}
               </th>
+              <td>
+                <img alt="team" class="team" src={el.team} /> {el.name}
+              </td>
               <td><code>{el.score}</code></td>
             </tr>
           ))}
