@@ -8,7 +8,9 @@ function App({data}) {
         <tbody>
           {data.map((el) => (
             <tr key={el.name}>
-              <th scope="row">{el.name}</th>
+              <th scope="row">
+                <img alt="team" class="team" src={el.team} /> {el.name}
+              </th>
               <td><code>{el.score}</code></td>
             </tr>
           ))}
