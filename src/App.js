@@ -88,8 +88,14 @@ function App() {
         </div>
       </div>
       <div className="row">
+        <div className="col border border-right-1 border-bottom-0 border-top-0 border-left-0">
+          <LeaderBoard data={leaderBoard} />
+        </div>
+        <div className="col border border-right-1 border-bottom-0 border-top-0 border-left-0">
+          <Drafted data={drafted} />
+        </div>
         {(ENV !== 'production') && (
-          <div className="col border border-right-1 border-bottom-0 border-top-0 border-left-0">
+          <div className="col border border-right-0 border-bottom-0 border-top-0 border-left-0">
             <form onSubmit={handleSubmit}>
               <fieldset disabled={disabled}>
                 <div className="form-group">
@@ -114,12 +120,6 @@ function App() {
             </form>
           </div>
         )}
-        <div className="col border border-right-1 border-bottom-0 border-top-0 border-left-0">
-          <Drafted data={drafted} />
-        </div>
-        <div className="col">
-          <LeaderBoard data={leaderBoard} />
-        </div>
       </div>
     </div>
   );
