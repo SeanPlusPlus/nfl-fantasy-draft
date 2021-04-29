@@ -1,13 +1,6 @@
-const fs = require('fs');
-
-const path = 'teams.json';
-
-function getTeams() {
-  const rawdata = fs.readFileSync(path);
-  return JSON.parse(rawdata);
+function getTeam(name) {
+  return `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/scoreboard/${name}.png&h=80&scale=crop&w=80&location=origin`
 }
-
-const teams = getTeams();
 
 function getPickIdx(drafted_player, draft_list) {
   const idx = draft_list.indexOf(drafted_player);
@@ -28,12 +21,10 @@ module.exports = {
       // console.log(player, pick_index, delta, score);
     }
 
-    console.log(teams[entry.team]);
-    
     
     return {
       name: entry.name,
-      team: teams[entry.team],
+      team: getTeam(entry.team),
       email: entry.email,
       score: score,
     }
