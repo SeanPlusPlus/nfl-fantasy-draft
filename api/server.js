@@ -26,7 +26,7 @@ function getEntries() {
       list.push(row[pick_number].split(' - ')[0])
     }
     const entry = {
-      name: row['Timestamp'],
+      name: row['Name'],
       team: row['Team'],
       email: row['Email Address'],
       list: list,
