@@ -17,7 +17,8 @@ module.exports = {
     }
     
     return {
-      name: entry.email,
+      name: entry.name,
+      email: entry.email,
       score: score,
     }
   }
