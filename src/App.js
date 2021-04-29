@@ -9,10 +9,9 @@ import './App.css';
 
 const ENV = process.env.NODE_ENV 
 
-let API = 'http://localhost:3001/api/'
-if (ENV === 'production') {
-  API = 'https://raw.githubusercontent.com/SeanPlusPlus/nfl-fantasy-draft/main/data/api.json' 
-} 
+const LOCAL_API = 'http://localhost:3001/api/'
+const PROD_API = 'https://cse-tools.s3-us-west-1.amazonaws.com/nfl-fantasy-draft-2021/api.json'
+const API = (ENV !== 'production') ? PROD_API : LOCAL_API
 
 function App() {
   // state
