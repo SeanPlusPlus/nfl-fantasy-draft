@@ -11,7 +11,7 @@ const ENV = process.env.NODE_ENV
 
 const LOCAL_API = 'http://localhost:3001/api/'
 const PROD_API = 'https://cse-tools.s3-us-west-1.amazonaws.com/nfl-fantasy-draft-2021/api.json'
-const API = (ENV !== 'production') ? PROD_API : LOCAL_API
+const API = (ENV === 'production') ? PROD_API : LOCAL_API
 
 function App() {
   // state
