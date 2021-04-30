@@ -11,6 +11,21 @@ function getPickIdx(drafted_player, draft_list) {
 }
 
 module.exports = {
+  penalty: function(drafted, entry) {
+    var score = 0;
+    if(drafted.length ===  32){
+      for(var e = 0; e < entry.list.length; e++){
+        const mock_player =  entry.list[e];
+        const mock_pick = getPickIdx(mock_player, drafted);
+        if(mock_pick > 31){
+          console.log(mock_player, e);
+          score += Math.pow(32 - e, 2);
+        }
+      }  
+    }
+    return score
+  },
+
   get: function(drafted, entry) {
     var score = 0;
     for (var i = 0; i < drafted.length; i++) {
@@ -19,7 +34,7 @@ module.exports = {
       const delta = Math.abs(i - pick_index)
       score += Math.pow(delta, 2)
     }
-    
+
     return {
       name: entry.name,
       team: getTeam(entry.team),

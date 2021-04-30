@@ -50,10 +50,28 @@ function filterDrafted(drafted, el) {
 app.get(BASE, (req, res) => {
   const drafted_players = drafted.get()
   const un_drafted = prospects.get().filter(filterDrafted.bind(this, drafted_players));
+  const ranked = leaderBoard(drafted_players, entries)
+
+  const final = true
+  if (final) {
+    const rankings = getFinalRankings()
+    ranked.forEach((entry) => {
+      entry.score = rankings[entry.name]
+    })
+    ranked.sort((a, b) => (a.score > b.score) ? 1 : -1)
+    ranked.forEach((score, idx) => {
+      score.rank = idx + 1;
+      const prev = ranked[idx - 1];
+      if (prev && prev.score === score.score) {
+        score.rank = prev.rank
+      }
+    });
+  }
+
   res.send({
     prospects: un_drafted,
     drafted: drafted_players,
-    leaderBoard: leaderBoard(drafted_players, entries),
+    leaderBoard: ranked 
   });
 });
 
@@ -75,6 +93,33 @@ app.post(BASE, (req, res) => {
     drafted: drafted_players,
     leaderBoard: leaderBoard(drafted_players, entries),
   });
+});
+
+
+function getFinalRankings () {
+  const drafted_players = drafted.get()
+  const final = entries.map((entry) => {
+    const points = score.get(drafted_players, entry).score
+    const penalty =  score.penalty(drafted_players, entry)
+    const total = points + penalty
+    return {
+      name: entry.name,
+      total: total,
+      points: points,
+      penalty: penalty,
+    }
+
+  }) 
+  const ranked = {}
+  const sorted = final.sort((a, b) => (a.total > b.total) ? 1 : -1)
+  sorted.forEach((entry) => {
+    ranked[entry.name] = entry.total
+  })
+  return ranked
+}
+
+app.get(BASE + 'final', (req, res) => {
+  res.send(getFinalRankings());
 });
 
 app.listen(port, () => {
