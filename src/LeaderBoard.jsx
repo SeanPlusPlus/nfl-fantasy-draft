@@ -12,7 +12,7 @@ function App({data}) {
                 {el.rank}
               </th>
               <td>
-                <img alt="team" class="team" src={el.team} /> {el.name}
+                <img alt="team" className="team" src={el.team} /> {el.name}
               </td>
               <td><code>{el.score}</code></td>
             </tr>
